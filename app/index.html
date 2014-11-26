@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang = 'en' ng-app = "sudoku">
+	
+	<head>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		
+		<link rel="stylesheet" href="css/style.css">
+		
+		<script type = 'text/javascript' src = 'lib/angular.min.js'></script>
+		<script type = 'text/javascript' src = 'js/sudoku.js'></script>
+
+		<title>Sudoku Game</title>
+		
+	</head>
+
+	<body ng-controller = "mainCtrl">
+	
+		<section id = 'puzzle'>
+			
+			{{board}}
+			
+		</section>
+		
+	</body>
+	
+</html>

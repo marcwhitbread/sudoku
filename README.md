@@ -1,2 +1,4 @@
-sudoku
-======
+sudoku-game
+===========
+
+Sudoku Game
