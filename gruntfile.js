@@ -27,13 +27,13 @@ module.exports = function(grunt) {
 				files: 'src/less/*.less',
 				tasks: ['less:dev']
 			},
-			concat: {
+			dev: {
 				files: ['src/js/*.js', 'src/js/controllers/*.js', 'src/js/services/*.js', 'src/js/factories/*.js'],
 				tasks: ['concat:dev', 'uglify:prod']
 			}
 		},
 		jshint: {
-			all: ['src/*.js']
+			all: ['src/js/*.js']
 		}
     });
     
