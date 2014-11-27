@@ -4,12 +4,12 @@
 	<head>
 		
 		<meta charset="utf-8">
-		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-		
-		<link rel="stylesheet" href="css/style.css">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">		
 		
 		<script type = 'text/javascript' src = 'lib/angular.min.js'></script>
 		<script type = 'text/javascript' src = 'js/sudoku.js'></script>
+		
+		<link rel="stylesheet" href="css/style.css">
 
 		<title>Sudoku Game</title>
 		
@@ -17,9 +17,25 @@
 
 	<body ng-controller = "mainCtrl">
 	
-		<section id = 'puzzle'>
+		<section id = 'sudoku-board'>
 			
-			{{board}}
+			<div class = 'region' ng-repeat = "region in board.regions">
+				<div class = 'resp'>
+					
+					<div class = 'tile' ng-repeat = "tile in region.tiles" ng-class = "(tile.lock) ? 'locked' : ''">
+						<div class = 'resp'>
+							
+							<div class = 'v-align'>
+								<span>{{tile.guess}}</span>
+							</div>
+						
+						</div>
+					</div>
+				
+				</div>
+			</div>
+			
+			<div class = 'clear'></div>
 			
 		</section>
 		

@@ -1,9 +1,10 @@
 app.factory('Tile', [function() {
 	
 	//constructor
-	var Tile = function(val, def) {
-		this.val = (val != 0) ? val : null;
-		this.def = def;
+	var Tile = function(answer, lock) {
+		this.answer = answer;
+		this.lock = lock;
+		this.guess = (lock) ? answer : null;
 	}
 	
 	//public methods
