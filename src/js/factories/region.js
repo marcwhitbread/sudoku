@@ -31,6 +31,13 @@ app.factory('Region', ['Tile', function(Tile) {
 			
 		},
 		
+		//select tile option
+		selectTileOption: function(tile, option) {
+			
+			tile.selectOption(option);
+				
+		},
+		
 		//reset region
 		reset: function() {
 			

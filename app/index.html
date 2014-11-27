@@ -28,8 +28,12 @@
 							 
 						<div class = 'resp'>
 							
-							<div class = 'v-align' ng-click = "board.hideTileOptions(); tile.showOptions();">
-								<span>{{tile.guess}}</span>
+							<div class = 'v-align' 
+								 ng-click = "board.hideTileOptions(); tile.showOptions();"
+								 ng-if = "(tile.guesses.length <= 1)">
+								
+								<span ng-repeat = "guess in tile.guesses | orderBy: number">{{guess}}</span>
+								
 							</div>
 							
 							<div class = 'options' 
@@ -39,7 +43,7 @@
 								<div class = 'option' 
 									 ng-repeat = "option in tile.options" 
 									 ng-class = "(option.selected) ? 'selected' : ''"
-									 ng-click = "board.selectOption(region, option);">
+									 ng-click = "board.selectTileOption(region, tile, option);">
 											
 									<div class = 'resp'>
 										

@@ -44,22 +44,11 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 			
 		},
 		
-		//select option
-		selectOption: function(option) {
+		//select tile option
+		selectTileOption: function(region, tile, option) {
 		
-			option.select();
+			region.selectTileOption(tile, option);
 				
-		},
-		
-		//validate option
-		validate: function() {
-			
-			//row
-			
-			//col
-			
-			//region
-			
 		},
 		
 		//Reset board to start

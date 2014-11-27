@@ -4,7 +4,7 @@ app.factory('Tile', ['Option', function(Option) {
 	var Tile = function(answer, lock) {
 		this.answer = answer;
 		this.lock = lock;
-		this.guess = null;
+		this.guesses = null;
 		this.showingOptions = null;
 		this.options = [];
 		
@@ -27,16 +27,38 @@ app.factory('Tile', ['Option', function(Option) {
 		
 		//hide tile options
 		hideOptions: function() {
-		
+			
+			if(this.guesses.length > 1) return false;
+			
 			this.showingOptions = false;
 			
+		},
+		
+		//select tile option
+		selectOption: function(option) {
+		
+			option.select();
+
+			this.updateGuess(option);
+			
+		},
+		
+		updateGuess: function(option) {
+			
+			if(option.selected) {
+				this.guesses.push(option.number);
+			} else {
+				var index = this.guesses.indexOf(option.number);
+				this.guesses.splice(index,1);
+			}
+				
 		},
 		
 		//reset tile
 		reset: function() {
 			
 			//reset guess
-			this.guess = (this.lock) ? this.answer : null;
+			this.guesses = (this.lock) ? [this.answer] : [];
 			this.showingOptions = false;
 			
 			//reset options
