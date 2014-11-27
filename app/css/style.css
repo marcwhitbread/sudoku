@@ -7,6 +7,9 @@ section#sudoku-board {
   width: 80%;
   max-width: 95vh;
   margin: 0 auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 115%;
+  font-weight: 300;
 }
 section#sudoku-board .region {
   position: relative;
@@ -30,10 +33,7 @@ section#sudoku-board .region .tile {
   height: 0;
   padding-bottom: 33.33333333%;
   background: #fff;
-  -webkit-transition: transform 750ms linear;
-  -moz-transition: transform 750ms linear;
-  -ms-transition: transform 750ms linear;
-  -o-transition: transform 750ms linear;
+  font-size: 5vmin;
 }
 section#sudoku-board .region .tile.locked {
   background: #eee;
@@ -46,16 +46,42 @@ section#sudoku-board .region .tile .resp {
   border: 2px solid #ddd;
 }
 section#sudoku-board .region .tile .v-align {
+  position: relative;
   display: table;
   width: 100%;
   height: 100%;
   text-align: center;
+  z-index: 1;
 }
 section#sudoku-board .region .tile .v-align span {
   display: table-cell;
   vertical-align: middle;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 5vmin;
-  line-height: 115%;
-  font-weight: 300;
+}
+section#sudoku-board .region .tile .options {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: -1;
+}
+section#sudoku-board .region .tile .options.show {
+  opacity: 1;
+  z-index: 1;
+}
+section#sudoku-board .region .tile .options .option {
+  position: relative;
+  float: left;
+  width: 33.33333333%;
+  height: 0;
+  padding-bottom: 33.33333333%;
+  background: #fff;
+  font-size: 2vmin;
+}
+section#sudoku-board .region .tile .options .option.selected {
+  background: #aaa;
+}
+section#sudoku-board .region .tile .options .option .resp {
+  border: 0;
 }

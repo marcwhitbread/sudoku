@@ -33,6 +33,42 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 			
 			//TBD if time permits
 			
+		},
+		
+		//hide open tile options
+		hideTileOptions: function() {
+			
+			this.regions.forEach(function(region) {
+				region.hideTileOptions();
+			});
+			
+		},
+		
+		//select option
+		selectOption: function(option) {
+		
+			option.select();
+				
+		},
+		
+		//validate option
+		validate: function() {
+			
+			//row
+			
+			//col
+			
+			//region
+			
+		},
+		
+		//Reset board to start
+		reset: function() {
+			
+			this.regions.forEach(function(region) {
+				region.reset();
+			});
+			
 		}
 		
 	}

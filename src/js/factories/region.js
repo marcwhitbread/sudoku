@@ -20,6 +20,24 @@ app.factory('Region', ['Tile', function(Tile) {
             	
             });
 			
+		},
+		
+		//hide open tile options
+		hideTileOptions: function() {
+			
+			this.tiles.forEach(function(tile) {
+				tile.hideOptions();
+			});
+			
+		},
+		
+		//reset region
+		reset: function() {
+			
+			this.tiles.forEach(function(tile) {
+				tile.reset();
+			});
+			
 		}
 		
 	}
