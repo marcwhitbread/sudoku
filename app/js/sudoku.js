@@ -12,6 +12,7 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 	//constructor
 	var Board = function() {
 		this.regions = [];
+		this.validate = true;
 	}
 	
 	//public methods
@@ -24,9 +25,9 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 			
 			$http.get('js/data/puzzle.js').success(function(data) {
             	
-            	data.forEach(function(obj) {
+            	data.forEach(function(obj, i) {
 
-	            	var region = new Region();
+	            	var region = new Region(i);
 	            	region.load(obj.region);
 	            	
 	            	scope.regions.push(region);
@@ -57,7 +58,16 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 		selectTileOption: function(region, tile, option) {
 		
 			region.selectTileOption(tile, option);
+			
+			region.validate(option);
 				
+		},
+		
+		//toggle hints
+		toggleValidation: function() {
+			
+			this.validate = (this.validate) ? false : true;
+			
 		},
 		
 		//Reset board to start
@@ -80,7 +90,9 @@ app.factory('Option', [function() {
 	var Option = function(number) {
 		this.number = number;
 		this.enable = true;
-		this.selected = false;
+		this.selected = null;
+		
+		this.reset();
 	}
 	
 	//public methods
@@ -108,8 +120,11 @@ app.factory('Option', [function() {
 app.factory('Region', ['Tile', function(Tile) {
 	
 	//constructor
-	var Region = function() {
+	var Region = function(id) {
+		this.id = id;
 		this.tiles = [];
+		
+		this.reset();
 	}
 	
 	//public methods
@@ -120,9 +135,9 @@ app.factory('Region', ['Tile', function(Tile) {
 			
 			var scope = this;
             	
-        	data.forEach(function(obj) {
+        	data.forEach(function(obj, i) {
 	        	
-            	var tile = new Tile(obj.val, obj.def);
+            	var tile = new Tile(i, obj.val, obj.def);
 	            scope.tiles.push(tile);
             	
             });
@@ -145,9 +160,41 @@ app.factory('Region', ['Tile', function(Tile) {
 				
 		},
 		
+		//validate region againstv option
+		validate: function(option) {
+
+			//matched tile set
+			var set = [];
+			
+			//build tile query set
+			var tiles = this.tiles;
+			
+			//for each tile
+			tiles.forEach(function(tile) {
+
+				//if the option number equals the only guess
+				if((option.number == tile.guesses[0]) && (tile.guesses.length == 1)) {
+					set.push(tile);
+				}
+				
+			});
+			
+			//if there is more than 1 match in the set
+			var valid = (set.length > 1) ? false : true;
+			
+			//set valid flag
+			set.forEach(function(obj) {
+				obj.valid = valid;
+			});
+			
+		},
+		
 		//reset region
 		reset: function() {
 			
+			this.valid = true;
+			
+			//reset tiles
 			this.tiles.forEach(function(tile) {
 				tile.reset();
 			});
@@ -162,12 +209,14 @@ app.factory('Region', ['Tile', function(Tile) {
 app.factory('Tile', ['Option', function(Option) {
 	
 	//constructor
-	var Tile = function(answer, lock) {
+	var Tile = function(id, answer, lock) {
+		this.id = id;
 		this.answer = answer;
 		this.lock = lock;
 		this.guesses = null;
 		this.showingOptions = null;
 		this.options = [];
+		this.valid = true;
 		
 		for(var i = 0; i < 9; i++) {
 			this.options.push(new Option(i+1));
@@ -207,10 +256,14 @@ app.factory('Tile', ['Option', function(Option) {
 		updateGuess: function(option) {
 			
 			if(option.selected) {
-				this.guesses.push(option.number);
+				
+				this.guesses.push(option.number)				
+				
 			} else {
+				
 				var index = this.guesses.indexOf(option.number);
 				this.guesses.splice(index,1);
+				
 			}
 				
 		},
@@ -221,6 +274,7 @@ app.factory('Tile', ['Option', function(Option) {
 			//reset guess
 			this.guesses = (this.lock) ? [this.answer] : [];
 			this.showingOptions = false;
+			this.valid = true;
 			
 			//reset options
 			this.options.forEach(function(option) {

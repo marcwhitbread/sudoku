@@ -17,14 +17,14 @@
 
 	<body ng-controller = "mainCtrl">
 	
-		<section id = 'sudoku-board'>
+		<section id = 'sudoku-board' ng-class = "{'hints': board.validate}">
 			
 			<div class = 'region' ng-repeat = "region in board.regions">
 				<div class = 'resp'>
 					
 					<div class = 'tile' 
 						 ng-repeat = "tile in region.tiles" 
-						 ng-class = "(tile.lock) ? 'locked' : ''">
+						 ng-class = "{'locked': tile.lock, 'invalid': !tile.valid}">
 							 
 						<div class = 'resp'>
 							
@@ -42,7 +42,7 @@
 								
 								<div class = 'option' 
 									 ng-repeat = "option in tile.options" 
-									 ng-class = "(option.selected) ? 'selected' : ''"
+									 ng-class = "{'selected': option.selected}"
 									 ng-click = "board.selectTileOption(region, tile, option);">
 											
 									<div class = 'resp'>
@@ -68,9 +68,12 @@
 		
 		<section id = 'options'>
 			
-			<div class = 'button' ng-click = "board.reset();">Reset</div>
+			<span class = 'button' ng-click = "board.reset();">Reset</span>
+			<span class = 'button' ng-class = "(board.validate) ? 'selected' : ''" ng-click = "board.toggleValidation();">Validate</span>
 			
 		</section>
+		
+		<!-- {{board}} -->
 		
 	</body>
 	

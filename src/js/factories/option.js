@@ -4,7 +4,9 @@ app.factory('Option', [function() {
 	var Option = function(number) {
 		this.number = number;
 		this.enable = true;
-		this.selected = false;
+		this.selected = null;
+		
+		this.reset();
 	}
 	
 	//public methods

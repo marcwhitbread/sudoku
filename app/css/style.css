@@ -7,6 +7,7 @@ section#sudoku-board {
   width: 80%;
   max-width: 95vh;
   margin: 0 auto;
+  cursor: pointer;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 115%;
   font-weight: 300;
@@ -34,6 +35,7 @@ section#sudoku-board .region .tile {
   padding-bottom: 33.33333333%;
   background: #fff;
   font-size: 5vmin;
+  color: #505050;
 }
 section#sudoku-board .region .tile.locked {
   background: #eee;
@@ -78,10 +80,19 @@ section#sudoku-board .region .tile .options .option {
   padding-bottom: 33.33333333%;
   background: #fff;
   font-size: 2vmin;
+  line-height: 100%;
+  color: #505050;
 }
 section#sudoku-board .region .tile .options .option.selected {
-  background: #aaa;
+  background: #ddd;
 }
 section#sudoku-board .region .tile .options .option .resp {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border: 0;
+}
+section#sudoku-board.hints .region .tile.invalid {
+  color: red;
 }

@@ -10,6 +10,7 @@ section#sudoku-board {
 	width: 80%;
 	max-width: 95vh;
 	margin: 0 auto;
+	cursor: pointer;
 	
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	line-height: 115%;
@@ -40,9 +41,14 @@ section#sudoku-board {
 			background: #fff;
 			
 			font-size: 5vmin;
+			color: #505050;
 			
 			&.locked {
 				background: #eee;
+			}
+			
+			&.invalid {
+				// color: red;
 			}
 			
 			.resp {
@@ -90,14 +96,33 @@ section#sudoku-board {
 					background: #fff;
 					
 					font-size: 2vmin;
+					line-height: 100%;
+					color: #505050;
 					
 					&.selected {
-						background: #aaa;
+						background: #ddd;
 					}
 					
 					.resp {
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
 						border: 0;
 					}
+				}
+			}
+		}
+	}
+	
+	&.hints {
+		
+		.region {
+			
+			.tile {
+				
+				&.invalid {
+					color: red;
 				}
 			}
 		}

@@ -3,6 +3,7 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 	//constructor
 	var Board = function() {
 		this.regions = [];
+		this.validate = true;
 	}
 	
 	//public methods
@@ -15,9 +16,9 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 			
 			$http.get('js/data/puzzle.js').success(function(data) {
             	
-            	data.forEach(function(obj) {
+            	data.forEach(function(obj, i) {
 
-	            	var region = new Region();
+	            	var region = new Region(i);
 	            	region.load(obj.region);
 	            	
 	            	scope.regions.push(region);
@@ -48,7 +49,16 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 		selectTileOption: function(region, tile, option) {
 		
 			region.selectTileOption(tile, option);
+			
+			region.validate(option);
 				
+		},
+		
+		//toggle hints
+		toggleValidation: function() {
+			
+			this.validate = (this.validate) ? false : true;
+			
 		},
 		
 		//Reset board to start

@@ -1,12 +1,14 @@
 app.factory('Tile', ['Option', function(Option) {
 	
 	//constructor
-	var Tile = function(answer, lock) {
+	var Tile = function(id, answer, lock) {
+		this.id = id;
 		this.answer = answer;
 		this.lock = lock;
 		this.guesses = null;
 		this.showingOptions = null;
 		this.options = [];
+		this.valid = true;
 		
 		for(var i = 0; i < 9; i++) {
 			this.options.push(new Option(i+1));
@@ -46,10 +48,14 @@ app.factory('Tile', ['Option', function(Option) {
 		updateGuess: function(option) {
 			
 			if(option.selected) {
-				this.guesses.push(option.number);
+				
+				this.guesses.push(option.number)				
+				
 			} else {
+				
 				var index = this.guesses.indexOf(option.number);
 				this.guesses.splice(index,1);
+				
 			}
 				
 		},
@@ -60,6 +66,7 @@ app.factory('Tile', ['Option', function(Option) {
 			//reset guess
 			this.guesses = (this.lock) ? [this.answer] : [];
 			this.showingOptions = false;
+			this.valid = true;
 			
 			//reset options
 			this.options.forEach(function(option) {
