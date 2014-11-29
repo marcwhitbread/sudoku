@@ -94,5 +94,6 @@ section#sudoku-board .region .tile .options .option .resp {
   border: 0;
 }
 section#sudoku-board.hints .region .tile.invalid {
-  color: red;
+  background: red;
+  color: #fff;
 }

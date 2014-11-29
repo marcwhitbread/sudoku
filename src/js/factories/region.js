@@ -52,39 +52,52 @@ app.factory('Region', ['Tile', function(Tile) {
 		},
 		
 		//validate region against option
-		validate: function(tile, option) {
+		validateTile: function(tile, option) {
 			
-			this.validateTileSet(tile, option, this.tiles, 1);
+			var tiles = []
+			
+			this.tiles.forEach(function(obj) {
+				
+				if(obj != tile)
+					tiles.push(obj);
+				
+			});
+			
+			return this.validateTileSet(tile, option, tiles);
 			
 		},
 		
+		//validate row against option
 		validateTileRow: function(tile, option) {
 
 			var tiles = [];
 			
 			for(var i = 0; i < 3; i++)
-				tiles.push(this.tiles[tile.getRow()*3+i]);
+				if(this.tiles[tile.getRow()*3+i].guesses.length > 0)
+					tiles.push(this.tiles[tile.getRow()*3+i]);
 			
-			this.validateTileSet(tile, option, tiles, (!option.selected) ? 1 : 0);
+			return this.validateTileSet(tile, option, tiles);
 			
 		},
 		
+		//validate col against option
 		validateTileCol: function(tile, option) {
 			
 			var tiles = [];
 			
-			for(var i = 0; i < 3; i++)
-				tiles.push(this.tiles[(i*3)+tile.getCol()]);
+			for(var i = 0; i < 3; i++) 
+				if(this.tiles[tile.getCol()+i*3].guesses.length > 0)
+					tiles.push(this.tiles[tile.getCol()+i*3]);
 			
-			this.validateTileSet(tile, option, tiles, (!option.selected) ? 1 : 0);
+			return this.validateTileSet(tile, option, tiles);
 			
 		},
 		
 		//validate tile set against option
-		validateTileSet: function(tile, option, tileSet, threshold) {
+		validateTileSet: function(tile, option, tileSet) {
 			
 			//matched tile set
-			var set = [];
+			var invalidSet = [];
 			
 			//for each tile
 			tileSet.forEach(function(tile) {
@@ -94,19 +107,13 @@ app.factory('Region', ['Tile', function(Tile) {
 					
 					//if the option number equals the only guess
 					if(option.number == guess)
-						set.push(tile);
+						invalidSet.push(tile);
 				
 				});
 				
 			});
 			
-			//if there is more than 1 match in the set
-			var valid = (set.length > threshold) ? false : true;
-			
-			//set valid flag
-			set.forEach(function(obj) {
-				obj.valid = valid;
-			});
+			return invalidSet;
 			
 		},
 		

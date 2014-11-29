@@ -59,26 +59,71 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 		
 			region.selectTileOption(tile, option);
 			
-			this.validate(region, tile, option);
+			//begin validation
+			this.validateTile(region, tile, option, []);
 				
 		},
 		
 		//validate update to board
-		validate: function(region, tile, option) {
+		validateTile: function(region, tile, option, validatedTiles) {
+			
+			var scope = this;
 			
 			//validate region
-			region.validate(tile, option);
+			var invalidSet = region.validateTile(tile, option);
+			
+			this.validateSet(region, tile, option, invalidSet, validatedTiles);
 			
 			//validate rows/cols
 			for(var i = 0; i < 3; i++) {
+			
+				var colRegion = this.regions[region.getCol()+i*3];
+				var rowRegion = this.regions[region.getRow()*3+i];
+
+				if(colRegion != region) {
+					
+					var invalidSet = colRegion.validateTileCol(tile, option);
+					
+					this.validateSet(colRegion, tile, option, invalidSet, validatedTiles);
+					
+				}
 				
-				if(this.regions[region.getRow()*3+i] != region)
-					this.regions[region.getRow()*3+i].validateTileRow(tile, option);
-				
-				if(this.regions[(i*3)+region.getCol()] != region)
-					this.regions[(i*3)+region.getCol()].validateTileCol(tile, option);
+				if(rowRegion != region) {
+					
+					var invalidSet = rowRegion.validateTileRow(tile, option);
+					
+					this.validateSet(rowRegion, tile, option, invalidSet, validatedTiles);
+					
+				}
 					
 			}
+			
+			if(tile.guesses.length == 0) {
+				tile.valid = true;
+			}
+			
+		},
+		
+		validateSet: function(region, tile, option, invalidSet, validatedTiles) {
+
+			var scope = this;
+			
+			if(tile.guesses.length == 0) {
+				tile.valid = true;
+			} else if((invalidSet.length > 0) && (validatedTiles.indexOf(tile) == -1)) {
+				validatedTiles.push(tile);
+				tile.valid = false;
+			} else if(validatedTiles.indexOf(tile) == -1) {
+				tile.valid = true;
+			}
+			
+			invalidSet.forEach(function(obj) {
+				
+				if(validatedTiles.indexOf(obj) == -1) {
+					scope.validateTile(region, obj, option, validatedTiles);
+				}
+				
+			});
 			
 		},
 		
@@ -190,39 +235,52 @@ app.factory('Region', ['Tile', function(Tile) {
 		},
 		
 		//validate region against option
-		validate: function(tile, option) {
+		validateTile: function(tile, option) {
 			
-			this.validateTileSet(tile, option, this.tiles, 1);
+			var tiles = []
+			
+			this.tiles.forEach(function(obj) {
+				
+				if(obj != tile)
+					tiles.push(obj);
+				
+			});
+			
+			return this.validateTileSet(tile, option, tiles);
 			
 		},
 		
+		//validate row against option
 		validateTileRow: function(tile, option) {
 
 			var tiles = [];
 			
 			for(var i = 0; i < 3; i++)
-				tiles.push(this.tiles[tile.getRow()*3+i]);
+				if(this.tiles[tile.getRow()*3+i].guesses.length > 0)
+					tiles.push(this.tiles[tile.getRow()*3+i]);
 			
-			this.validateTileSet(tile, option, tiles, (!option.selected) ? 1 : 0);
+			return this.validateTileSet(tile, option, tiles);
 			
 		},
 		
+		//validate col against option
 		validateTileCol: function(tile, option) {
 			
 			var tiles = [];
 			
-			for(var i = 0; i < 3; i++)
-				tiles.push(this.tiles[(i*3)+tile.getCol()]);
+			for(var i = 0; i < 3; i++) 
+				if(this.tiles[tile.getCol()+i*3].guesses.length > 0)
+					tiles.push(this.tiles[tile.getCol()+i*3]);
 			
-			this.validateTileSet(tile, option, tiles, (!option.selected) ? 1 : 0);
+			return this.validateTileSet(tile, option, tiles);
 			
 		},
 		
 		//validate tile set against option
-		validateTileSet: function(tile, option, tileSet, threshold) {
+		validateTileSet: function(tile, option, tileSet) {
 			
 			//matched tile set
-			var set = [];
+			var invalidSet = [];
 			
 			//for each tile
 			tileSet.forEach(function(tile) {
@@ -232,19 +290,13 @@ app.factory('Region', ['Tile', function(Tile) {
 					
 					//if the option number equals the only guess
 					if(option.number == guess)
-						set.push(tile);
+						invalidSet.push(tile);
 				
 				});
 				
 			});
 			
-			//if there is more than 1 match in the set
-			var valid = (set.length > threshold) ? false : true;
-			
-			//set valid flag
-			set.forEach(function(obj) {
-				obj.valid = valid;
-			});
+			return invalidSet;
 			
 		},
 		

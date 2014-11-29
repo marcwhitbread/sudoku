@@ -50,26 +50,71 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 		
 			region.selectTileOption(tile, option);
 			
-			this.validate(region, tile, option);
+			//begin validation
+			this.validateTile(region, tile, option, []);
 				
 		},
 		
 		//validate update to board
-		validate: function(region, tile, option) {
+		validateTile: function(region, tile, option, validatedTiles) {
+			
+			var scope = this;
 			
 			//validate region
-			region.validate(tile, option);
+			var invalidSet = region.validateTile(tile, option);
+			
+			this.validateSet(region, tile, option, invalidSet, validatedTiles);
 			
 			//validate rows/cols
 			for(var i = 0; i < 3; i++) {
+			
+				var colRegion = this.regions[region.getCol()+i*3];
+				var rowRegion = this.regions[region.getRow()*3+i];
+
+				if(colRegion != region) {
+					
+					var invalidSet = colRegion.validateTileCol(tile, option);
+					
+					this.validateSet(colRegion, tile, option, invalidSet, validatedTiles);
+					
+				}
 				
-				if(this.regions[region.getRow()*3+i] != region)
-					this.regions[region.getRow()*3+i].validateTileRow(tile, option);
-				
-				if(this.regions[(i*3)+region.getCol()] != region)
-					this.regions[(i*3)+region.getCol()].validateTileCol(tile, option);
+				if(rowRegion != region) {
+					
+					var invalidSet = rowRegion.validateTileRow(tile, option);
+					
+					this.validateSet(rowRegion, tile, option, invalidSet, validatedTiles);
+					
+				}
 					
 			}
+			
+			if(tile.guesses.length == 0) {
+				tile.valid = true;
+			}
+			
+		},
+		
+		validateSet: function(region, tile, option, invalidSet, validatedTiles) {
+
+			var scope = this;
+			
+			if(tile.guesses.length == 0) {
+				tile.valid = true;
+			} else if((invalidSet.length > 0) && (validatedTiles.indexOf(tile) == -1)) {
+				validatedTiles.push(tile);
+				tile.valid = false;
+			} else if(validatedTiles.indexOf(tile) == -1) {
+				tile.valid = true;
+			}
+			
+			invalidSet.forEach(function(obj) {
+				
+				if(validatedTiles.indexOf(obj) == -1) {
+					scope.validateTile(region, obj, option, validatedTiles);
+				}
+				
+			});
 			
 		},
 		
