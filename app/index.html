@@ -17,7 +17,7 @@
 
 	<body ng-controller = "mainCtrl">
 	
-		<section id = 'sudoku-board' ng-class = "{'hints': board.validate}">
+		<section id = 'sudoku-board' ng-class = "{'hints': board.validated}">
 			
 			<div class = 'region' ng-repeat = "region in board.regions">
 				<div class = 'resp'>
@@ -69,7 +69,7 @@
 		<section id = 'options'>
 			
 			<span class = 'button' ng-click = "board.reset();">Reset</span>
-			<span class = 'button' ng-class = "(board.validate) ? 'selected' : ''" ng-click = "board.toggleValidation();">Validate</span>
+			<span class = 'button' ng-class = "(board.validated) ? 'selected' : ''" ng-click = "board.toggleValidation();">Validate</span>
 			
 		</section>
 		

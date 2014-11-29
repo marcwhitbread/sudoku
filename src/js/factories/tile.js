@@ -20,6 +20,16 @@ app.factory('Tile', ['Option', function(Option) {
 	//public methods
 	Tile.prototype = {
 		
+		//get tile row
+		getRow: function() {
+			return Math.ceil((this.id-1)/3+0.5)-1;
+		},
+		
+		//get tile col
+		getCol: function() {
+			return this.id%3;
+		},
+
 		//show tile options
 		showOptions: function() {
 			

@@ -3,7 +3,7 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 	//constructor
 	var Board = function() {
 		this.regions = [];
-		this.validate = true;
+		this.validated = true;
 	}
 	
 	//public methods
@@ -50,14 +50,33 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 		
 			region.selectTileOption(tile, option);
 			
-			region.validate(option);
+			this.validate(region, tile, option);
 				
+		},
+		
+		//validate update to board
+		validate: function(region, tile, option) {
+			
+			//validate region
+			region.validate(tile, option);
+			
+			//validate rows/cols
+			for(var i = 0; i < 3; i++) {
+				
+				if(this.regions[region.getRow()*3+i] != region)
+					this.regions[region.getRow()*3+i].validateTileRow(tile, option);
+				
+				if(this.regions[(i*3)+region.getCol()] != region)
+					this.regions[(i*3)+region.getCol()].validateTileCol(tile, option);
+					
+			}
+			
 		},
 		
 		//toggle hints
 		toggleValidation: function() {
 			
-			this.validate = (this.validate) ? false : true;
+			this.validated = (this.validated) ? false : true;
 			
 		},
 		

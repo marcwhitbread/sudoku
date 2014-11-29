@@ -25,6 +25,16 @@ app.factory('Region', ['Tile', function(Tile) {
 			
 		},
 		
+		//get region row
+		getRow: function() {
+			return Math.ceil((this.id-1)/3+0.5)-1;
+		},
+		
+		//get region col
+		getCol: function() {
+			return this.id%3;
+		},
+		
 		//hide open tile options
 		hideTileOptions: function() {
 			
@@ -41,27 +51,57 @@ app.factory('Region', ['Tile', function(Tile) {
 				
 		},
 		
-		//validate region againstv option
-		validate: function(option) {
+		//validate region against option
+		validate: function(tile, option) {
+			
+			this.validateTileSet(tile, option, this.tiles, 1);
+			
+		},
+		
+		validateTileRow: function(tile, option) {
 
+			var tiles = [];
+			
+			for(var i = 0; i < 3; i++)
+				tiles.push(this.tiles[tile.getRow()*3+i]);
+			
+			this.validateTileSet(tile, option, tiles, (!option.selected) ? 1 : 0);
+			
+		},
+		
+		validateTileCol: function(tile, option) {
+			
+			var tiles = [];
+			
+			for(var i = 0; i < 3; i++)
+				tiles.push(this.tiles[(i*3)+tile.getCol()]);
+			
+			this.validateTileSet(tile, option, tiles, (!option.selected) ? 1 : 0);
+			
+		},
+		
+		//validate tile set against option
+		validateTileSet: function(tile, option, tileSet, threshold) {
+			
 			//matched tile set
 			var set = [];
 			
-			//build tile query set
-			var tiles = this.tiles;
-			
 			//for each tile
-			tiles.forEach(function(tile) {
-
-				//if the option number equals the only guess
-				if((option.number == tile.guesses[0]) && (tile.guesses.length == 1)) {
-					set.push(tile);
-				}
+			tileSet.forEach(function(tile) {
+				
+				//for each guess
+				tile.guesses.forEach(function(guess) {
+					
+					//if the option number equals the only guess
+					if(option.number == guess)
+						set.push(tile);
+				
+				});
 				
 			});
 			
 			//if there is more than 1 match in the set
-			var valid = (set.length > 1) ? false : true;
+			var valid = (set.length > threshold) ? false : true;
 			
 			//set valid flag
 			set.forEach(function(obj) {
