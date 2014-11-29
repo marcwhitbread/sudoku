@@ -1,9 +1,13 @@
-app.factory('Board', ['$http', 'Region', function($http, Region) {
+app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval, Region) {
 	
 	//constructor
 	var Board = function() {
 		this.regions = [];
 		this.validated = true;
+		this.timer;
+		this.stop;
+		
+		this.reset();
 	}
 	
 	//public methods
@@ -125,8 +129,24 @@ app.factory('Board', ['$http', 'Region', function($http, Region) {
 			
 		},
 		
+		//start timer
+		startTimer: function() {
+			
+			var scope = this;
+			
+			this.stop = $interval(function() {
+				scope.timer++;
+			}, 1000);
+			
+		},
+		
 		//Reset board to start
 		reset: function() {
+			
+			this.timer = 0;
+			this.stop = undefined;
+			
+			this.startTimer();
 			
 			this.regions.forEach(function(region) {
 				region.reset();

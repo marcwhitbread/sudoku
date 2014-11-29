@@ -70,6 +70,7 @@
 			
 			<span class = 'button' ng-click = "board.reset();">Reset</span>
 			<span class = 'button' ng-class = "(board.validated) ? 'selected' : ''" ng-click = "board.toggleValidation();">Validate</span>
+			<span class = 'button'>{{board.timer | filterTime}}</span>
 			
 		</section>
 		
