@@ -6,19 +6,26 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">		
 		
-		<script type = 'text/javascript' src = 'lib/angular.min.js'></script>
+		<script type = 'text/javascript' src = 'lib/angular/angular.min.js'></script>
 		<script type = 'text/javascript' src = 'js/sudoku.js'></script>
 		
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="lib/fontawesome/css/font-awesome.min.css">
 
 		<title>Sudoku Game</title>
 		
 	</head>
 
 	<body ng-controller = "mainCtrl">
-	
-		<section id = 'sudoku-board' ng-class = "{'hints': board.validated}">
+		
+		<section id = 'header' class = 'align'>
+				
+			<h1>Play Sudoku!</h1>
 			
+		</section>
+			
+		<section id = 'sudoku-board' class = 'align' ng-class = "{'hints': board.validated}">
+				
 			<div class = 'region' ng-repeat = "region in board.regions">
 				<div class = 'resp'>
 					
@@ -55,10 +62,39 @@
 								</div>
 								
 							</div>
+							
+							<div class = 'caret'></div>
 						
 						</div>
 					</div>
 				
+				</div>
+				
+			</div>
+			
+			<div class = 'win modal' ng-class = "{'show': board.win}">
+				<div class = 'v-align'>
+					<div class = 'inner'>
+						
+						<h2>Congratulations, you win!</h2>
+						
+						<span class = 'button' ng-click = "board.reset();">Play Again</span>
+						
+						<div class = 'timer'>Completed in: {{board.timer | filterTime}}</div>
+					
+					</div>
+				</div>
+			</div>
+			
+			<div class = 'play modal' ng-class = "{'show': !board.loaded}">
+				<div class = 'v-align'>
+					<div class = 'inner'>
+						
+						<h2>Welcome, press play to get started!</h2>
+						
+						<span class = 'button' ng-click = "board.loadDefault();">Play</span>
+					
+					</div>
 				</div>
 			</div>
 			
@@ -66,15 +102,22 @@
 			
 		</section>
 		
-		<section id = 'options'>
+		<section id = 'settings' class = 'align'>
+					
+			<div class = 'button' ng-click = "board.reset();"><i class="fa fa-refresh"></i> Reset</div>
+			<div class = 'button validate' ng-class = "(board.validated) ? 'selected' : ''" ng-click = "board.toggleValidation();">
+				<span>Validate</span>
+				
+				<div class = 'toggle'>
+					<div class = 'knob'>
+						<div class = 'inner'></div>
+					</div>
+				</div>	
+			</div>
 			
-			<span class = 'button' ng-click = "board.reset();">Reset</span>
-			<span class = 'button' ng-class = "(board.validated) ? 'selected' : ''" ng-click = "board.toggleValidation();">Validate</span>
-			<span class = 'button'>{{board.timer | filterTime}}</span>
-			
+			<div class = 'timer'><i class="fa fa-clock-o"></i> {{board.timer | filterTime}}</div>
+				
 		</section>
-		
-		<!-- {{board}} -->
 		
 	</body>
 	

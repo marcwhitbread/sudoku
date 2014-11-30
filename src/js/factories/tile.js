@@ -20,6 +20,16 @@ app.factory('Tile', ['Option', function(Option) {
 	//public methods
 	Tile.prototype = {
 		
+		//load tile
+		load: function(data) {
+            
+            this.answer = data.val;
+            this.lock = data.def;
+            
+            this.reset();
+			
+		},
+		
 		//get tile row
 		getRow: function() {
 			return Math.ceil((this.id-1)/3+0.5)-1;

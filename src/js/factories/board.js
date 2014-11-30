@@ -6,28 +6,41 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 		this.validated = true;
 		this.timer;
 		this.stop;
+		this.win;
+		this.loaded;
 		
 		this.reset();
+		this.init();
 	}
 	
 	//public methods
 	Board.prototype = {
 		
+		//init board
+		init: function() {
+			
+			for(var i = 0; i < 9; i++) {
+				this.regions.push(new Region(i));
+			}
+			
+		},
+		
 		//load board
 		loadDefault: function() {
+			
+			this.loaded = true;
 			
 			var scope = this;
 			
 			$http.get('js/data/puzzle.js').success(function(data) {
             	
             	data.forEach(function(obj, i) {
-
-	            	var region = new Region(i);
-	            	region.load(obj.region);
 	            	
-	            	scope.regions.push(region);
+	            	scope.regions[i].load(obj.region);
 	            	
             	});
+            	
+            	scope.reset();
             	
             });
 			
@@ -35,6 +48,9 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 		
 		//load random board
 		loadRandom: function() {
+			
+			this.loaded = true;
+			this.startTimer();
 			
 			//TBD if time permits
 			
@@ -56,6 +72,8 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 			
 			//begin validation
 			this.validateTile(region, tile, [], option);
+			
+			this.win = this.checkWin();
 				
 		},
 		
@@ -77,6 +95,7 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 			
 		},
 		
+		//validate single guess
 		validateGuess: function(region, tile, guess, validatedTiles) {
 			
 			//validate region
@@ -110,6 +129,7 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 				
 		},
 		
+		//validate set of tiles
 		validateSet: function(region, tile, number, invalidSet, validatedTiles) {
 
 			var scope = this;
@@ -140,12 +160,38 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 			
 		},
 		
+		//check win condition
+		checkWin: function() {
+			
+			var flag = true;
+			
+			this.regions.forEach(function(region) {
+
+				region.tiles.forEach(function(tile) {
+
+					//check guess against answer and confirm only 1 guess made per tile
+					if((tile.guesses.length != 1) || (tile.guesses[0] != tile.answer))
+						flag = false;
+					
+				});
+				
+			});
+			
+			return flag;
+			
+		},
+		
 		//start timer
 		startTimer: function() {
 			
 			var scope = this;
 			
 			this.stop = $interval(function() {
+				if(scope.win) {
+					scope.stop = undefined;
+					return true;
+				}
+					
 				scope.timer++;
 			}, 1000);
 			
@@ -155,9 +201,12 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 		reset: function() {
 			
 			this.timer = 0;
+			$interval.cancel(this.stop);
 			this.stop = undefined;
+			this.win = false;
 			
-			this.startTimer();
+			if(this.loaded)
+				this.startTimer();
 			
 			this.regions.forEach(function(region) {
 				region.reset();

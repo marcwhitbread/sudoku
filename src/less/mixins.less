@@ -12,6 +12,13 @@
 	-o-transition: @transition;  
 }
 
+.transition-transform(@transition) {
+	-webkit-transition: -webkit-transform @transition;  
+	-moz-transition: -moz-transform @transition;
+	-ms-transition: -ms-transform @transition; 
+	-o-transition: -o-transform @transition;  
+}
+
 .border-radius(@radius) {
 	-webkit-border-radius: @radius;
 	-moz-border-radius: @radius;

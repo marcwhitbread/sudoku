@@ -1,16 +1,28 @@
+body {
+  margin: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
 .clear {
   clear: both;
   height: 0;
 }
+section#header {
+  height: 7vh;
+}
+section#header h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 4vmin;
+  line-height: 7vh;
+  color: #666;
+}
 section#sudoku-board {
-  position: relative;
-  width: 80%;
-  max-width: 95vh;
-  margin: 0 auto;
   cursor: pointer;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow: hidden;
   line-height: 115%;
-  font-weight: 300;
+  color: #666;
 }
 section#sudoku-board .region {
   position: relative;
@@ -25,7 +37,7 @@ section#sudoku-board .region .resp {
   left: -1.5px;
   right: -1.5px;
   bottom: -1.5px;
-  border: 3px solid #ddd;
+  border: 3px solid #dddddd;
 }
 section#sudoku-board .region .tile {
   position: relative;
@@ -45,7 +57,7 @@ section#sudoku-board .region .tile .resp {
   left: -1px;
   right: -1px;
   bottom: -1px;
-  border: 2px solid #ddd;
+  border: 2px solid #dddddd;
 }
 section#sudoku-board .region .tile .v-align {
   position: relative;
@@ -84,7 +96,7 @@ section#sudoku-board .region .tile .options .option {
   color: #505050;
 }
 section#sudoku-board .region .tile .options .option.selected {
-  background: #ddd;
+  background: #dddddd;
 }
 section#sudoku-board .region .tile .options .option .resp {
   top: 0;
@@ -93,7 +105,184 @@ section#sudoku-board .region .tile .options .option .resp {
   bottom: 0;
   border: 0;
 }
-section#sudoku-board.hints .region .tile.invalid {
-  background: red;
+section#sudoku-board .region .tile .caret {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2vh;
+  height: 2vh;
+  background: url(../../app/img/caret.png) no-repeat;
+  background-size: 100% 100%;
+  z-index: -1;
+  opacity: 0;
+  -webkit-transition: opacity 500ms linear;
+  -moz-transition: opacity 500ms linear;
+  -ms-transition: opacity 500ms linear;
+  -o-transition: opacity 500ms linear;
+}
+section#sudoku-board .modal {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  z-index: -1;
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.8);
+}
+section#sudoku-board .modal .v-align {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+section#sudoku-board .modal .v-align > .inner {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+section#sudoku-board .modal .v-align > .inner h2 {
+  padding: 0 5vh;
+  font-size: 5vh;
+  line-height: 120%;
+}
+section#sudoku-board .modal .v-align > .inner .button {
+  display: inline-block;
+  position: relative;
+  background: #666;
+  padding: 0 1vh 0 1vh;
+  margin: 0 0 0 1vh;
+  cursor: pointer;
+  min-width: 100px;
+  -webkit-border-radius: 1vh;
+  -moz-border-radius: 1vh;
+  border-radius: 1vh;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  font-size: 3vh;
   color: #fff;
+  line-height: 5vh;
+}
+section#sudoku-board .modal .v-align > .inner .button:hover {
+  background: #888;
+}
+section#sudoku-board .modal.show {
+  z-index: 1;
+  opacity: 1;
+}
+section#sudoku-board .modal.win .timer {
+  display: inline-block;
+  margin: 0 0 0 2vh;
+}
+section#sudoku-board.hints .region .tile.invalid .caret {
+  opacity: 1;
+  z-index: 2;
+}
+section#settings {
+  height: 5vh;
+  padding: 1vh 0;
+  font-size: 3vmin;
+  line-height: 5vh;
+}
+section#settings .button {
+  position: relative;
+  float: left;
+  background: #666;
+  padding: 0 1vh 0 1vh;
+  margin: 0 0 0 1vh;
+  cursor: pointer;
+  -webkit-border-radius: 1vh;
+  -moz-border-radius: 1vh;
+  border-radius: 1vh;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  color: #fff;
+}
+section#settings .button:hover {
+  background: #888;
+}
+section#settings .button.validate {
+  padding-right: 8vh;
+}
+section#settings .button.validate .toggle {
+  position: absolute;
+  top: 1vh;
+  right: 1vh;
+  bottom: 1vh;
+  width: 6vh;
+  background: #aaa;
+  -webkit-border-radius: 0.5vh;
+  -moz-border-radius: 0.5vh;
+  border-radius: 0.5vh;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-transition: background 250ms cubic-bezier(0, 0, 0.58, 1);
+  -moz-transition: background 250ms cubic-bezier(0, 0, 0.58, 1);
+  -ms-transition: background 250ms cubic-bezier(0, 0, 0.58, 1);
+  -o-transition: background 250ms cubic-bezier(0, 0, 0.58, 1);
+}
+section#settings .button.validate .toggle .knob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3vh;
+  background: #666;
+  -webkit-border-radius: 0.5vh;
+  -moz-border-radius: 0.5vh;
+  border-radius: 0.5vh;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-transition: -webkit-transform 250ms cubic-bezier(0, 0, 0.58, 1);
+  -moz-transition: -moz-transform 250ms cubic-bezier(0, 0, 0.58, 1);
+  -ms-transition: -ms-transform 250ms cubic-bezier(0, 0, 0.58, 1);
+  -o-transition: -o-transform 250ms cubic-bezier(0, 0, 0.58, 1);
+}
+section#settings .button.validate .toggle .knob > .inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  border: 1px solid #aaa;
+  -webkit-border-radius: 0.5vh;
+  -moz-border-radius: 0.5vh;
+  border-radius: 0.5vh;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+section#settings .button.validate:hover .toggle .knob {
+  background: #888;
+}
+section#settings .button.validate.selected .toggle {
+  background: #33c748;
+}
+section#settings .button.validate.selected .toggle .knob {
+  -webkit-transform: translateX(3vh);
+  -moz-transform: translateX(3vh);
+  -ms-transform: translateX(3vh);
+  -o-transform: translateX(3vh);
+}
+section#settings .button.validate.selected .toggle .knob > .inner {
+  border: 1px solid #33c748;
+}
+section#settings .timer {
+  float: right;
+  padding-right: 10px;
+  color: #666;
+}
+#header.align,
+#sudoku-board.align,
+#settings.align {
+  position: relative;
+  width: 100%;
+  max-width: 86vh;
+  border-left: 2px solid #dddddd;
+  border-right: 2px solid #dddddd;
+  background: #dddddd;
+  margin: 0 auto;
 }

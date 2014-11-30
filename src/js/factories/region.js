@@ -6,20 +6,29 @@ app.factory('Region', ['Tile', function(Tile) {
 		this.tiles = [];
 		
 		this.reset();
+		this.init();
 	}
 	
 	//public methods
 	Region.prototype = {
 		
-		//load board
+		//init region
+		init: function() {
+			
+			for(var i = 0; i < 9; i++) {
+				this.tiles.push(new Tile(i, 0, false));
+			}
+			
+		},
+		
+		//load region
 		load: function(data) {
 			
 			var scope = this;
             	
         	data.forEach(function(obj, i) {
 	        	
-            	var tile = new Tile(i, obj.val, obj.def);
-	            scope.tiles.push(tile);
+	            scope.tiles[i].load(obj);
             	
             });
 			
