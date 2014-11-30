@@ -52,7 +52,7 @@ app.factory('Region', ['Tile', function(Tile) {
 		},
 		
 		//validate region against option
-		validateTile: function(tile, option) {
+		validateTile: function(tile, number) {
 			
 			var tiles = []
 			
@@ -63,12 +63,12 @@ app.factory('Region', ['Tile', function(Tile) {
 				
 			});
 			
-			return this.validateTileSet(tile, option, tiles);
+			return this.validateTileSet(tile, number, tiles);
 			
 		},
 		
 		//validate row against option
-		validateTileRow: function(tile, option) {
+		validateTileRow: function(tile, number) {
 
 			var tiles = [];
 			
@@ -76,12 +76,12 @@ app.factory('Region', ['Tile', function(Tile) {
 				if(this.tiles[tile.getRow()*3+i].guesses.length > 0)
 					tiles.push(this.tiles[tile.getRow()*3+i]);
 			
-			return this.validateTileSet(tile, option, tiles);
+			return this.validateTileSet(tile, number, tiles);
 			
 		},
 		
 		//validate col against option
-		validateTileCol: function(tile, option) {
+		validateTileCol: function(tile, number) {
 			
 			var tiles = [];
 			
@@ -89,12 +89,12 @@ app.factory('Region', ['Tile', function(Tile) {
 				if(this.tiles[tile.getCol()+i*3].guesses.length > 0)
 					tiles.push(this.tiles[tile.getCol()+i*3]);
 			
-			return this.validateTileSet(tile, option, tiles);
+			return this.validateTileSet(tile, number, tiles);
 			
 		},
 		
 		//validate tile set against option
-		validateTileSet: function(tile, option, tileSet) {
+		validateTileSet: function(tile, number, tileSet) {
 			
 			//matched tile set
 			var invalidSet = [];
@@ -106,7 +106,7 @@ app.factory('Region', ['Tile', function(Tile) {
 				tile.guesses.forEach(function(guess) {
 					
 					//if the option number equals the only guess
-					if(option.number == guess)
+					if(number == guess)
 						invalidSet.push(tile);
 				
 				});

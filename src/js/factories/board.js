@@ -51,23 +51,38 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 		
 		//select tile option
 		selectTileOption: function(region, tile, option) {
-		
+			
 			region.selectTileOption(tile, option);
 			
 			//begin validation
-			this.validateTile(region, tile, option, []);
+			this.validateTile(region, tile, [], option);
 				
 		},
 		
 		//validate update to board
-		validateTile: function(region, tile, option, validatedTiles) {
+		validateTile: function(region, tile, validatedTiles, option) {
 			
 			var scope = this;
 			
-			//validate region
-			var invalidSet = region.validateTile(tile, option);
+			if(option && !option.selected)
+				scope.validateGuess(region, tile, option.number, validatedTiles);
 			
-			this.validateSet(region, tile, option, invalidSet, validatedTiles);
+			tile.guesses.forEach(function(guess) {
+				scope.validateGuess(region, tile, guess, validatedTiles);
+			});
+			
+			if(tile.guesses.length == 0) {
+				tile.valid = true;
+			}
+			
+		},
+		
+		validateGuess: function(region, tile, guess, validatedTiles) {
+			
+			//validate region
+			var invalidSet = region.validateTile(tile, guess);
+			
+			this.validateSet(region, tile, guess, invalidSet, validatedTiles);
 			
 			//validate rows/cols
 			for(var i = 0; i < 3; i++) {
@@ -77,29 +92,25 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 
 				if(colRegion != region) {
 					
-					var invalidSet = colRegion.validateTileCol(tile, option);
+					var invalidSet = colRegion.validateTileCol(tile, guess);
 					
-					this.validateSet(colRegion, tile, option, invalidSet, validatedTiles);
+					this.validateSet(colRegion, tile, guess, invalidSet, validatedTiles);
 					
 				}
 				
 				if(rowRegion != region) {
 					
-					var invalidSet = rowRegion.validateTileRow(tile, option);
+					var invalidSet = rowRegion.validateTileRow(tile, guess);
 					
-					this.validateSet(rowRegion, tile, option, invalidSet, validatedTiles);
+					this.validateSet(rowRegion, tile, guess, invalidSet, validatedTiles);
 					
 				}
 					
 			}
-			
-			if(tile.guesses.length == 0) {
-				tile.valid = true;
-			}
-			
+				
 		},
 		
-		validateSet: function(region, tile, option, invalidSet, validatedTiles) {
+		validateSet: function(region, tile, number, invalidSet, validatedTiles) {
 
 			var scope = this;
 			
@@ -115,7 +126,7 @@ app.factory('Board', ['$http', '$interval', 'Region', function($http, $interval,
 			invalidSet.forEach(function(obj) {
 				
 				if(validatedTiles.indexOf(obj) == -1) {
-					scope.validateTile(region, obj, option, validatedTiles);
+					scope.validateTile(region, obj, validatedTiles, undefined);
 				}
 				
 			});
