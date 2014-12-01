@@ -1,5 +1,6 @@
-function Region(id) {
+function Region(id, board) {
 	this.id = id;
+	this.board = board;
 	this.obj = $("<div class = 'region'>\
 		<div class = 'resp'></div>\
 	</div>");
@@ -10,7 +11,7 @@ function Region(id) {
 	this.init = function() {
 		
 		for(var i = 8; i >= 0; i--) {
-			this.tiles[i] = new Tile(i, 0, false);
+			this.tiles[i] = new Tile(i, 0, false, this);
 			this.obj.children(this.obj_inner).prepend(this.tiles[i].obj);
 		}
 		

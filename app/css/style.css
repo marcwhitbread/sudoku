@@ -69,6 +69,7 @@ section#sudoku-board .region .tile .v-align {
 }
 section#sudoku-board .region .tile .v-align span {
   display: table-cell;
+  width: 100%;
   vertical-align: middle;
 }
 section#sudoku-board .region .tile .options {

@@ -20,7 +20,7 @@ function Board(obj) {
 	this.init = function() {
 		
 		for(var i = 8; i >= 0; i--) {
-			this.regions[i] = new Region(i);
+			this.regions[i] = new Region(i, this);
 			this.obj.prepend(this.regions[i].obj);
 		}
 		
@@ -40,7 +40,6 @@ function Board(obj) {
 		});
 
 		options_toggle_objs.on('click', { scope: this }, function(e) {
-			console.log('a');
 			e.data.scope.hideTileOptions();
 		});
 		

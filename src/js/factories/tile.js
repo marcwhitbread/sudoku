@@ -1,5 +1,6 @@
-function Tile(id, answer, lock) {
+function Tile(id, answer, lock, region) {
 	this.id = id;
+	this.region = region;
 	this.obj = $("<div class = 'tile'>\
 		<div class = 'resp'>\
 			<div class = 'v-align options-toggle'>\
@@ -25,7 +26,7 @@ function Tile(id, answer, lock) {
 	this.init = function() {
 		
 		for(var i = 8; i >= 0; i--) {
-			this.options[i] = new Option(i+1);
+			this.options[i] = new Option(i+1, this);
 			this.obj.find(this.obj_inner).prepend(this.options[i].obj);
 		}
 		
@@ -68,6 +69,9 @@ function Tile(id, answer, lock) {
 		//update guesses
 		if(this.guesses.length == 1)
 			guess_obj.html(this.guesses[0]);
+		else {
+			guess_obj.html('');
+		}
 		
 	}
 	
