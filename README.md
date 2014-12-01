@@ -102,10 +102,6 @@
 
 <p>Test specifically stated that frameworks were not to be used. Time constrains, AngularJS model-view 2-way binding reduced testing time surrounding events and kicking back classes to the DOM to update state.</p>
 
-<h4>jQuery</h4>
-
-<p>jQuery was my ideal choice for this implementation based on my experience.</p>
-
 <h4>Puzzle Generator</h4>
 
 <p>Generating puzzles with a specific number of tiles and adding a difficulty option.</p>
