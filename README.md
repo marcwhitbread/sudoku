@@ -10,41 +10,41 @@
 
 <h2>Features</h2>
 
-<h3>Timer</h3>
+<h4>Timer</h4>
 
 <p>To time how quickly the player can finish the puzzle.</p>
 
-<h3>Reset</h3>
+<h4>Reset</h4>
 
 <p>To allow the user to restart the puzzle.</p>
 
-<h3>Validation</h3>
+<h4>Validation</h4>
 
 <p>To optionally allow the user instant feedback from the board if has any values conflicting with any other tile in it's region, row, or column.</p>
 
-<h3>CSS3 Fluid Layout</h3>
+<h4>CSS3 Fluid Layout</h4>
 
 <p>Employed the use of viewport units for a seamless experience across supported devices.</p>
 
-<h3>Puzzle Generator</h3>
+<h4>Puzzle Generator</h4>
 
 <p>TBD</p>
 
 <h2>Technologies Used</h2>
 
-<h3>Grunt</h3>
+<h4>Grunt</h4>
 
 <p>Automated LESS compilation, JS concatenation and minification.</p>
 
-<h3>AngularJS</h3>
+<h4>AngularJS</h4>
 
 <p>MVC framework leveraged solely for 2 way model-view binding to reduce testing time that would have been impacted UI updates with jQuery.</p>
 
-<h3>LESS</h3>
+<h4>LESS</h4>
 
 <p>Simplify and organize CSS code. Mixins used to simplify cross-browser prefix specific CSS attributes (transform, border-radius, transition).</p>
 
-<h3>AJAX/JSON</h3>
+<h4>AJAX/JSON</h4>
 
 <p>External storage and data model of default puzzle.</p>
 
@@ -55,13 +55,13 @@
 <li>Deduces initial page load time by offloading until game start</li>
 </ul>
 
-<h3>FontAwesome</h3>
+<h4>FontAwesome</h4>
 
 <p>Font based icons to expedite UI development.</p>
 
 <h2>Application Structure</h2>
 
-<h3>Overview/Strategy</h3>
+<h4>Overview/Strategy</h4>
 
 <p>To develop a mobile first, responsive, and exclusively touch/mouse driven experience to avoid the keyboard entirely. This was achieved by removing the input field for populating a cells value and adding an option grid in stead. In addition, this would provide the user with the option to store more than one value in a tile more intuitively. Multiple selected options is also a very realistic scenario when working out a Sudoku puzzle.</p>
 
@@ -71,13 +71,13 @@
 
 <p>A single controller is required to construct the board object and apply to the scope on DOM ready.</p>
 
-<h3>Models</h3>
+<h4>Models</h4>
 
-<h4>Board</h4>
+<h5>Board()</h5>
 
 <p>Object responsible for maintaining state of completion, loading, timing and 9 region objects.</p>
 
-<h4>Region</h4>
+<h5>Region()</h5>
 
 <p>Contains 9 tile objects.</p>
 
@@ -88,28 +88,28 @@
 <li>reduce calculations related to validation of regional tiles</li>
 </ul>
 
-<h4>Tile</h4>
+<h5>Tile()</h5>
 
 <p>Supplied with answers and defaults. Object responsible for maintaining state of validity, display, guesses and 9 option objects</p>
 
-<h4>Option</h4>
+<h5>Option()</h5>
 
 <p>Object responsible for selected state. This object is not necessarily required but if expanding state of validity to an option itself as opposed to the tile, the option object would be able to handle it.</p>
 
 <h2>Trade-offs</h2>
 
-<h3>AngularJS</h3>
+<h4>AngularJS</h4>
 
 <p>Test specifically stated that frameworks were not to be used. Time constrains, AngularJS model-view 2-way binding reduced testing time surrounding events and kicking back classes to the DOM to update state.</p>
 
-<h3>jQuery</h3>
+<h4>jQuery</h4>
 
 <p>jQuery was my ideal choice for this implementation based on my experience.</p>
 
-<h3>Puzzle Generator</h3>
+<h4>Puzzle Generator</h4>
 
 <p>Generating puzzles with a specific number of tiles and adding a difficulty option.</p>
 
-<h3>LocalStorage</h3>
+<h4>LocalStorage</h4>
 
 <p>Maintaining state in the browser beyond a page refresh.</p>
