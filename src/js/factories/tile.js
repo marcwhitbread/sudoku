@@ -1,5 +1,15 @@
-var Tile = function(id, answer, lock) {
+function Tile(id, answer, lock) {
 	this.id = id;
+	this.obj = $("<div class = 'tile'>\
+		<div class = 'resp'>\
+			<div class = 'v-align options-toggle'>\
+				<span class = 'guess'></span>\
+				<div class = 'options'></div>\
+				<div class = 'caret'></div>\
+			</div>\
+		</div>\
+	</div>");
+	this.obj_inner = '.options';
 	this.answer = answer;
 	this.lock = lock;
 	this.guesses = null;
@@ -7,8 +17,18 @@ var Tile = function(id, answer, lock) {
 	this.options = [];
 	this.valid = true;
 	
-	for(var i = 0; i < 9; i++) {
-		this.options.push(new Option(i+1));
+	var guess_obj = $(this.obj).find('.guess');
+	var options_obj = $(this.obj).find('.options');
+	var options_toggle_obj = $(this.obj).find('.options-toggle');
+	
+	//init tile
+	this.init = function() {
+		
+		for(var i = 8; i >= 0; i--) {
+			this.options[i] = new Option(i+1);
+			this.obj.find(this.obj_inner).prepend(this.options[i].obj);
+		}
+		
 	}
 	
 	//load tile
@@ -17,7 +37,37 @@ var Tile = function(id, answer, lock) {
         this.answer = data.val;
         this.lock = data.def;
         
+        /* events */
+		options_toggle_obj.on('click', { scope: this }, function(e) {
+			e.data.scope.showOptions();
+		});
+		
         this.reset();
+		
+	}
+	
+	//update view
+	this.updateView = function() {
+		
+		//update lock
+		if(this.lock && !this.obj.hasClass('locked'))
+			this.obj.addClass('locked');
+		
+		//update show options
+		if(this.showingOptions && !options_obj.hasClass('show'))
+			options_obj.addClass('show');
+		else if(!this.showingOptions && options_obj.hasClass('show'))
+			options_obj.removeClass('show');
+		
+		//update tile validity
+		if(!this.valid && !this.obj.hasClass('invalid'))
+			this.obj.addClass('invalid');
+		else if(this.valid && this.obj.hasClass('invalid'))
+			this.obj.removeClass('invalid');
+		
+		//update guesses
+		if(this.guesses.length == 1)
+			guess_obj.html(this.guesses[0]);
 		
 	}
 	
@@ -33,8 +83,12 @@ var Tile = function(id, answer, lock) {
 	
 	//show tile options
 	this.showOptions = function() {
+
+		if(this.lock) return true;
 		
 		this.showingOptions = true;
+		
+		this.updateView();
 		
 	}
 
@@ -45,11 +99,13 @@ var Tile = function(id, answer, lock) {
 		
 		this.showingOptions = false;
 		
+		this.updateView();
+		
 	}
 	
 	//select tile option
 	this.selectOption = function(option) {
-	
+		
 		option.select();
 
 		this.updateGuess(option);
@@ -69,6 +125,8 @@ var Tile = function(id, answer, lock) {
 			this.guesses.splice(index,1);
 			
 		}
+		
+		this.updateView();
 			
 	}
 	
@@ -85,7 +143,10 @@ var Tile = function(id, answer, lock) {
 			option.reset();
 		});
 		
+		this.updateView();
+		
 	}
 	
 	this.reset();
+	this.init();
 }

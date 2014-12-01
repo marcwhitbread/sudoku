@@ -1,5 +1,12 @@
-var Option = function(number) {
+function Option(number) {
 	this.number = number;
+	this.obj = $("<div class = 'option'>\
+		<div class = 'resp'>\
+			<div class = 'v-align'>\
+				<span>" + this.number + "</span>\
+			</div>\
+		</div>\
+	</div>");
 	this.enable = true;
 	this.selected = null;
 	

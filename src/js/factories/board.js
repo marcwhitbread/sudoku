@@ -1,4 +1,5 @@
-var Board = function() {
+function Board(obj) {
+	this.obj = $(obj);
 	this.regions = [];
 	this.validated = true;
 	this.timer;
@@ -6,33 +7,63 @@ var Board = function() {
 	this.win;
 	this.loaded;
 	
+	var play_modal_obj = $('.play.modal');
+	var play_modal_play_button_obj = $('.play.modal .button.load');
+	var win_modal_obj = $('.win.modal');
+	var reset_button_obj = $('.button.reset');
+	var validate_button_obj = $('.button.validate');
+	var global_timer_obj = $('.global-timer');
+	var body_obj = $('body');
+	var options_toggle_objs;
+	
 	//init board
 	this.init = function() {
 		
-		for(var i = 0; i < 9; i++) {
-			this.regions.push(new Region(i));
+		for(var i = 8; i >= 0; i--) {
+			this.regions[i] = new Region(i);
+			this.obj.prepend(this.regions[i].obj);
 		}
+		
+		options_toggle_objs = $(this.obj).find('.options-toggle');
+		
+		/* events */
+		play_modal_play_button_obj.on('click', { scope: this }, function(e) {
+			e.data.scope.loadDefault(e.data.scope);
+		});
+		
+		validate_button_obj.on('click', { scope: this }, function(e) {
+			e.data.scope.toggleValidation();
+		});
+		
+		reset_button_obj.on('click', { scope: this }, function(e) {
+			e.data.scope.reset();
+		});
+
+		options_toggle_objs.on('click', { scope: this }, function(e) {
+			console.log('a');
+			e.data.scope.hideTileOptions();
+		});
 		
 	}
 	
 	//load board
-	this.loadDefault = function() {
+	this.loadDefault = function(scope) {
 		
 		this.loaded = true;
 		
-		var scope = this;
-		
-		$http.get('js/data/puzzle.js').success(function(data) {
-        	
-        	data.forEach(function(obj, i) {
-            	
-            	scope.regions[i].load(obj.region);
-            	
-        	});
-        	
-        	scope.reset();
-        	
-        });
+		$.ajax({
+			dataType: 'json',
+			url: 'js/data/puzzle.js',
+			success: function(data) {
+	        	
+	        	data.forEach(function(obj, i) {
+	            	scope.regions[i].load(obj.region);
+	        	});
+	        	
+	        	scope.reset();
+	        	
+	        }
+	    });
 		
 	}
 	
@@ -43,6 +74,50 @@ var Board = function() {
 		this.startTimer();
 		
 		//TBD if time permits
+		
+	}
+	
+	this.updateTimer = function() {
+		
+		global_timer_obj.html(this.formatTime());
+		
+	}
+	
+	this.updateView = function() {
+		
+		//update timer
+		this.updateTimer();
+		
+		//update win modal
+		if(this.win && !win_modal_obj.hasClass('show'))
+			win_modal_obj.addClass('show');
+		else if(!this.win && win_modal_obj.hasClass('show'))
+			win_modal_obj.removeClass('show');
+			
+		//update play modal
+		if(!this.loaded && !play_modal_obj.hasClass('show'))
+			play_modal_obj.addClass('show');
+		else if(this.loaded && play_modal_obj.hasClass('show'))
+			play_modal_obj.removeClass('show');
+			
+		//update hints
+		if(this.validated && !body_obj.hasClass('hints'))
+			body_obj.addClass('hints');
+		else if(!this.validated && body_obj.hasClass('hints'))
+			body_obj.removeClass('hints');
+		
+	}
+	
+	//format timer as mins:secs
+	this.formatTime = function() {
+		
+		var mins = Math.floor(this.timer/60);
+		var secs = Math.floor(this.timer%60);
+		
+		//add leading zero
+		secs = (secs.toString().length < 2) ? '0' + secs : secs;
+
+		return mins + ':' + secs;
 		
 	}
 	
@@ -63,7 +138,10 @@ var Board = function() {
 		//begin validation
 		this.validateTile(region, tile, [], option);
 		
-		this.win = this.checkWin();
+		this.checkWin();
+		
+		this.updateView();
+		tile.updateView();
 			
 	}
 	
@@ -148,6 +226,8 @@ var Board = function() {
 		
 		this.validated = (this.validated) ? false : true;
 		
+		this.updateView();
+		
 	}
 	
 	//check win condition
@@ -167,7 +247,7 @@ var Board = function() {
 			
 		});
 		
-		return flag;
+		this.win = flag;
 		
 	}
 	
@@ -176,13 +256,15 @@ var Board = function() {
 		
 		var scope = this;
 		
-		this.stop = $interval(function() {
+		this.stop = setInterval(function() {
 			if(scope.win) {
 				scope.stop = undefined;
 				return true;
 			}
 				
 			scope.timer++;
+			
+			scope.updateView();
 		}, 1000);
 		
 	}
@@ -191,7 +273,7 @@ var Board = function() {
 	this.reset = function() {
 		
 		this.timer = 0;
-		$interval.cancel(this.stop);
+		clearInterval(this.stop);
 		this.stop = undefined;
 		this.win = false;
 		
@@ -201,6 +283,8 @@ var Board = function() {
 		this.regions.forEach(function(region) {
 			region.reset();
 		});
+		
+		this.updateView();
 		
 	}
 	

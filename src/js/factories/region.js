@@ -1,12 +1,17 @@
-var Region = function(id) {
+function Region(id) {
 	this.id = id;
+	this.obj = $("<div class = 'region'>\
+		<div class = 'resp'></div>\
+	</div>");
+	this.obj_inner = '.resp';
 	this.tiles = [];
 	
 	//init region
 	this.init = function() {
 		
-		for(var i = 0; i < 9; i++) {
-			this.tiles.push(new Tile(i, 0, false));
+		for(var i = 8; i >= 0; i--) {
+			this.tiles[i] = new Tile(i, 0, false);
+			this.obj.children(this.obj_inner).prepend(this.tiles[i].obj);
 		}
 		
 	}
@@ -19,10 +24,15 @@ var Region = function(id) {
     	data.forEach(function(obj, i) {
         	
             scope.tiles[i].load(obj);
+            
+            scope.updateView();
         	
         });
 		
 	}
+	
+	//update view
+	this.updateView = function() {}
 	
 	//get region row
 	this.getRow = function() {
@@ -125,6 +135,8 @@ var Region = function(id) {
 		this.tiles.forEach(function(tile) {
 			tile.reset();
 		});
+		
+		this.updateView();
 		
 	}
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang = 'en' ng-app = "sudoku">
+<html lang = 'en'>
 	
 	<head>
 		
@@ -7,6 +7,7 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">		
 		
 		<script type = 'text/javascript' src = 'lib/angular/angular.min.js'></script>
+		<script type = 'text/javascript' src = 'lib/jquery/jquery.min.js'></script>
 		<script type = 'text/javascript' src = 'js/sudoku.js'></script>
 		
 		<link rel="stylesheet" href="css/style.css">
@@ -16,7 +17,7 @@
 		
 	</head>
 
-	<body ng-controller = "mainCtrl">
+	<body>
 		
 		<section id = 'header' class = 'align'>
 				
@@ -24,28 +25,24 @@
 			
 		</section>
 			
-		<section id = 'sudoku-board' class = 'align' ng-class = "{'hints': board.validated}">
+		<section id = 'sudoku-board' class = 'align'>
 				
-			<div class = 'region' ng-repeat = "region in board.regions">
+			<!--<div class = 'region'>
 				<div class = 'resp'>
 					
 					<div class = 'tile' 
-						 ng-repeat = "tile in region.tiles" 
-						 ng-class = "{'locked': tile.lock, 'invalid': !tile.valid}">
+						 ng-class = "{'invalid': !tile.valid}">
 							 
 						<div class = 'resp'>
 							
 							<div class = 'v-align' 
-								 ng-click = "board.hideTileOptions(); tile.showOptions();"
-								 ng-if = "(tile.guesses.length <= 1)">
+								 ng-click = "board.hideTileOptions();">
 								
-								<span ng-repeat = "guess in tile.guesses | orderBy: number">{{guess}}</span>
+								<span></span>
 								
 							</div>
 							
-							<div class = 'options' 
-								 ng-if = "(!tile.lock)"
-								 ng-class = "(tile.showingOptions) ? 'show' : ''">
+							<div class = 'options'>
 								
 								<div class = 'option' 
 									 ng-repeat = "option in tile.options" 
@@ -55,7 +52,7 @@
 									<div class = 'resp'>
 										
 										<div class = 'v-align'>
-											<span>{{option.number}}</span>
+											<span></span>
 										</div>
 										
 									</div>		
@@ -70,29 +67,29 @@
 				
 				</div>
 				
-			</div>
+			</div>-->
 			
-			<div class = 'win modal' ng-class = "{'show': board.win}">
+			<div class = 'win modal'>
 				<div class = 'v-align'>
 					<div class = 'inner'>
 						
 						<h2>Congratulations, you win!</h2>
 						
-						<span class = 'button' ng-click = "board.reset();">Play Again</span>
+						<span class = 'button reset'>Play Again</span>
 						
-						<div class = 'timer'>Completed in: {{board.timer | filterTime}}</div>
+						<div class = 'timer'>Completed in: <span class = 'global-timer'></span></div>
 					
 					</div>
 				</div>
 			</div>
 			
-			<div class = 'play modal' ng-class = "{'show': !board.loaded}">
+			<div class = 'play modal show'>
 				<div class = 'v-align'>
 					<div class = 'inner'>
 						
 						<h2>Welcome, press play to get started!</h2>
 						
-						<span class = 'button' ng-click = "board.loadDefault();">Play</span>
+						<span class = 'button load'>Play</span>
 					
 					</div>
 				</div>
@@ -104,8 +101,8 @@
 		
 		<section id = 'settings' class = 'align'>
 					
-			<div class = 'button' ng-click = "board.reset();"><i class="fa fa-refresh"></i> Reset</div>
-			<div class = 'button validate' ng-class = "(board.validated) ? 'selected' : ''" ng-click = "board.toggleValidation();">
+			<div class = 'button reset'><i class="fa fa-refresh"></i> Reset</div>
+			<div class = 'button validate'>
 				<span>Validate</span>
 				
 				<div class = 'toggle'>
@@ -115,7 +112,7 @@
 				</div>	
 			</div>
 			
-			<div class = 'timer'><i class="fa fa-clock-o"></i> {{board.timer | filterTime}}</div>
+			<div class = 'timer'><i class="fa fa-clock-o"></i> <span class = 'global-timer'></span></div>
 				
 		</section>
 		

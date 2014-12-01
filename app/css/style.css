@@ -174,10 +174,6 @@ section#sudoku-board .modal.win .timer {
   display: inline-block;
   margin: 0 0 0 2vh;
 }
-section#sudoku-board.hints .region .tile.invalid .caret {
-  opacity: 1;
-  z-index: 2;
-}
 section#settings {
   height: 5vh;
   padding: 1vh 0;
@@ -258,18 +254,6 @@ section#settings .button.validate .toggle .knob > .inner {
 section#settings .button.validate:hover .toggle .knob {
   background: #888;
 }
-section#settings .button.validate.selected .toggle {
-  background: #33c748;
-}
-section#settings .button.validate.selected .toggle .knob {
-  -webkit-transform: translateX(3vh);
-  -moz-transform: translateX(3vh);
-  -ms-transform: translateX(3vh);
-  -o-transform: translateX(3vh);
-}
-section#settings .button.validate.selected .toggle .knob > .inner {
-  border: 1px solid #33c748;
-}
 section#settings .timer {
   float: right;
   padding-right: 10px;
@@ -285,4 +269,20 @@ section#settings .timer {
   border-right: 2px solid #dddddd;
   background: #dddddd;
   margin: 0 auto;
+}
+body.hints section#sudoku-board .region .tile.invalid .caret {
+  opacity: 1;
+  z-index: 2;
+}
+body.hints section#settings .button.validate .toggle {
+  background: #33c748;
+}
+body.hints section#settings .button.validate .toggle .knob {
+  -webkit-transform: translateX(3vh);
+  -moz-transform: translateX(3vh);
+  -ms-transform: translateX(3vh);
+  -o-transform: translateX(3vh);
+}
+body.hints section#settings .button.validate .toggle .knob > .inner {
+  border: 1px solid #33c748;
 }

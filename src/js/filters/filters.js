@@ -1,5 +1,5 @@
 //convert seconds to mm:ss format
-var filterTime = function() {
+/*var filterTime = function() {
 	return function(seconds) {
 		
 		var mins = Math.floor(seconds/60);
@@ -13,4 +13,4 @@ var filterTime = function() {
 	}
 }
 
-app.filter('filterTime', filterTime);
+app.filter('filterTime', filterTime);*/
