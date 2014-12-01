@@ -67,9 +67,9 @@
 
 <p>The decision to add a large object hierarchy (Board > Region > Tile > Option) at the outset of the project was to mitigate any risk of inflexibility in any additions to functionality at each of the levels that arose beyond the foresight of the initial functional design.</p>
 
-<h4>Controller</h4>
+<h4>Controllers</h4>
 
-<h4>A single controller is required to construct the board object and apply to the scope on DOM ready.</h4>
+<p>A single controller is required to construct the board object and apply to the scope on DOM ready.</p>
 
 <h3>Models</h3>
 
