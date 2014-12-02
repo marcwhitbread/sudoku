@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     	pkg: grunt.file.readJSON('package.json'),
     	concat: {
 	    	dev: {
-		    	src: ['src/js/*.js', 'src/js/controllers/*.js', 'src/js/services/*.js', 'src/js/factories/*.js', 'src/js/filters/*.js'],
+		    	src: ['src/js/*.js', 'src/js/classes/*.js'],
 		    	dest: 'app/js/sudoku.js'
 	    	}
     	},
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 				tasks: ['less:dev']
 			},
 			dev: {
-				files: ['src/js/*.js', 'src/js/controllers/*.js', 'src/js/services/*.js', 'src/js/factories/*.js', 'src/js/filters/*.js'],
+				files: ['src/js/*.js', 'src/js/classes/*.js'],
 				tasks: ['concat:dev', 'uglify:prod']
 			}
 		},
