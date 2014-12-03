@@ -25,6 +25,7 @@ function Option(number, tile) {
 			
 	}
 	
+	//update view
 	this.updateView = function() {
 		
 		//update selected

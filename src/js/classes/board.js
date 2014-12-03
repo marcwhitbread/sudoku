@@ -76,12 +76,14 @@ function Board(obj) {
 		
 	}
 	
+	//update view timer
 	this.updateTimer = function() {
 		
 		global_timer_obj.html(this.formatTime());
 		
 	}
 	
+	//update view
 	this.updateView = function() {
 		
 		//update timer
