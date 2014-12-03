@@ -26,10 +26,6 @@
 
 <p>Employed the use of viewport units for a seamless experience across supported devices.</p>
 
-<h4>Puzzle Generator</h4>
-
-<p>TBD</p>
-
 <h2>Technologies Used</h2>
 
 <h4>Grunt</h4>
@@ -38,7 +34,11 @@
 
 <h4>AngularJS</h4>
 
-<p>MVC framework leveraged solely for 2 way model-view binding to reduce testing time that would have been impacted UI updates with jQuery.</p>
+<p>Original implementation used AngularJS, converted to jQuery based on requirements. Framework leveraged solely for 2 way model-view binding to reduce testing time that would have been impacted UI updates with jQuery.</p>
+
+<h4>jQuery</h4>
+
+<p>jQuery objects selected and HTML templates and stored in models for updating back to the view.</p>
 
 <h4>LESS</h4>
 
@@ -98,10 +98,6 @@
 
 <h2>Trade-offs</h2>
 
-<h4>AngularJS</h4>
-
-<p>Test specifically stated that frameworks were not to be used. Time constrains, AngularJS model-view 2-way binding reduced testing time surrounding events and kicking back classes to the DOM to update state.</p>
-
 <h4>Puzzle Generator</h4>
 
 <p>Generating puzzles with a specific number of tiles and adding a difficulty option.</p>
@@ -109,3 +105,7 @@
 <h4>LocalStorage</h4>
 
 <p>Maintaining state in the browser beyond a page refresh.</p>
+
+<h4>Templating</h4>
+
+<p>Use of templating engine like handlebars</p>

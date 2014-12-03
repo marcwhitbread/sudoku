@@ -4,11 +4,6 @@ $(document).ready(function() {
 	var board = new Board('#sudoku-board');
 	
 });
-/*app.controller('mainCtrl', ['$scope', 'Board', 'Region', 'Tile', function($scope, Board, Region, Tile) {
-	
-	$scope.board = new Board();
-	
-}]);*/
 function Board(obj) {
 	this.obj = $(obj);
 	this.regions = [];
@@ -657,19 +652,3 @@ function Tile(id, answer, lock, region) {
 	this.reset();
 	this.init();
 }
-//convert seconds to mm:ss format
-/*var filterTime = function() {
-	return function(seconds) {
-		
-		var mins = Math.floor(seconds/60);
-		var secs = Math.floor(seconds%60);
-		
-		//add leading zero
-		secs = (secs.toString().length < 2) ? '0' + secs : secs;
-
-		return mins + ':' + secs;
-		
-	}
-}
-
-app.filter('filterTime', filterTime);*/

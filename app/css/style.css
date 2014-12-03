@@ -112,7 +112,7 @@ section#sudoku-board .region .tile .caret {
   right: 0;
   width: 2vh;
   height: 2vh;
-  background: url(../../app/img/caret.png) no-repeat;
+  background: url(../img/caret.png) no-repeat;
   background-size: 100% 100%;
   z-index: -1;
   opacity: 0;
